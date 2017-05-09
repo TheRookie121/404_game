@@ -202,6 +202,10 @@ PlayState.init = function(data) {
     left: Phaser.KeyCode.LEFT,
     right: Phaser.KeyCode.RIGHT,
     up: Phaser.KeyCode.UP,
+    a: Phaser.KeyCode.A,
+    d: Phaser.KeyCode.D,
+    w: Phaser.KeyCode.W,
+    spacebar: Phaser.KeyCode.SPACEBAR,
   });
 
   this.keys.up.onDown.add(function () {
@@ -338,15 +342,23 @@ PlayState._spawnKey = function(x, y) {
 };
 
 PlayState._handleInput = function() {
-  if (this.keys.left.isDown) {
+  if (this.keys.left.isDown || this.keys.a.isDown) {
     this.hero.move(-1);
-  } else if (this.keys.right.isDown) {
+  } else if (this.keys.right.isDown || this.keys.d.isDown) {
     this.hero.move(1);
   } else {
     this.hero.move(0);
   }
 
   this.keys.up.onDown.add(function() {
+    this.hero.jump();
+  }, this);
+
+  this.keys.w.onDown.add(function() {
+    this.hero.jump();
+  }, this);
+
+  this.keys.spacebar.onDown.add(function() {
     this.hero.jump();
   }, this);
 };
