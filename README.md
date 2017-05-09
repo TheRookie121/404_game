@@ -1,5 +1,5 @@
 # 404_game
-*Stage LastMason 16-17*
+*Internship LastMason 16-17*
 
 
 ### Dependencies:
