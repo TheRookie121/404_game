@@ -254,15 +254,15 @@ ControlsState.create = function() {
   this.rightIcon = this.game.add.image(this.game.world.width / 1.3, this.game.world.height / 2, 'icon:Right');
   this.rightIcon.anchor.set(.5, .5);
 
-  this.wIcon = this.game.add.image(this.game.world.width / 1.5, this.game.world.height / 1.5, 'icon:W');
+  this.wIcon = this.game.add.image(this.game.world.width / 1.7, this.game.world.height / 1.5, 'icon:W');
   this.wIcon.anchor.set(.5, .5);
+  this.slashText = this.game.add.image(this.game.world.width / 1.6, this.game.world.height / 1.5, 'text:slash');
+  this.slashText.anchor.set(.5, .5);
+  this.upIcon = this.game.add.image(this.game.world.width / 1.5, this.game.world.height / 1.5, 'icon:Up');
+  this.upIcon.anchor.set(.5, .5);
   this.slashText = this.game.add.image(this.game.world.width / 1.4, this.game.world.height / 1.5, 'text:slash');
   this.slashText.anchor.set(.5, .5);
-  this.upIcon = this.game.add.image(this.game.world.width / 1.3, this.game.world.height / 1.5, 'icon:Up');
-  this.upIcon.anchor.set(.5, .5);
-  this.slashText = this.game.add.image(this.game.world.width / 1.2, this.game.world.height / 1.5, 'text:slash');
-  this.slashText.anchor.set(.5, .5);
-  this.spacebarIcon = this.game.add.image(this.game.world.width / 1.35, this.game.world.height / 1.28, 'icon:Spacebar');
+  this.spacebarIcon = this.game.add.image(this.game.world.width / 1.23, this.game.world.height / 1.5, 'icon:Spacebar');
   this.spacebarIcon.anchor.set(.5, .5);
 
   this.sfx = {
