@@ -143,15 +143,32 @@ LoadState.preload = function() {
   this.game.load.image('grass:2x1', 'img/grass_2x1.png');
   this.game.load.image('grass:1x1', 'img/grass_1x1.png');
   this.game.load.image('invisible-wall', 'img/invisible_wall.png');
-  this.game.load.image('icon:coin', 'img/coin_icon.png');
-  this.game.load.image('font:numbers', 'img/numbers.png');
   this.game.load.image('key', 'img/key.png');
+
+  this.game.load.image('font:numbers', 'img/numbers.png');
+
+  this.game.load.image('icon:coin', 'img/coin_icon.png');
+  this.game.load.image('icon:W', 'img/W_icon.png');
+  this.game.load.image('icon:A', 'img/A_icon.png');
+  this.game.load.image('icon:D', 'img/D_icon.png');
+  this.game.load.image('icon:Up', 'img/Up_icon.png');
+  this.game.load.image('icon:Left', 'img/Left_icon.png');
+  this.game.load.image('icon:Right', 'img/Right_icon.png');
+  this.game.load.image('icon:Spacebar', 'img/Spacebar_icon.png');
 
   this.game.load.image('text:gameTitle', 'img/gameTitle_text.png');
   this.game.load.image('text:youWin', 'img/youWin_text.png');
   this.game.load.image('text:awesome', 'img/awesome_text.png');
   this.game.load.image('text:play', 'img/play_text.png');
   this.game.load.image('text:playAgain', 'img/playAgain_text.png');
+  this.game.load.image('text:controlsSmall', 'img/controls_small_text.png');
+  this.game.load.image('text:controlsBig', 'img/controls_big_text.png');
+  this.game.load.image('text:goBack', 'img/back_text.png');
+  this.game.load.image('text:moveLeft', 'img/moveLeft_text.png');
+  this.game.load.image('text:moveRight', 'img/moveRight_text.png');
+  this.game.load.image('text:jump', 'img/jump_text.png');
+  this.game.load.image('text:dash', 'img/dash_text.png');
+  this.game.load.image('text:slash', 'img/slash_text.png');
 
   this.game.load.audio('sfx:jump', 'audio/jump.wav');
   this.game.load.audio('sfx:coin', 'audio/coin.wav');
@@ -161,6 +178,7 @@ LoadState.preload = function() {
   this.game.load.audio('sfx:death', 'audio/death.wav');
   this.game.load.audio('sfx:gameOver', 'audio/gameOver.wav');
   this.game.load.audio('sfx:startGame', 'audio/startGame.ogg');
+  this.game.load.audio('sfx:select', 'audio/select.mp3');
 
   this.game.load.spritesheet('coin', 'img/coin_animated.png', 22, 22);
   this.game.load.spritesheet('spider', 'img/spider.png', 42, 32);
@@ -178,13 +196,16 @@ GameTitleState = {};
 
 GameTitleState.create = function() {
   this.game.add.image(0, 0, 'background');
-  this.youWinText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2.5, 'text:gameTitle');
-  this.youWinText.anchor.set(.5, .5);
-  this.playAgainText = this.game.add.button(this.game.world.width /2, this.game.world.height / 1.5, 'text:play', playGame, this);
-  this.playAgainText.anchor.set(.5, .5);
+  this.gameTitleText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2.5, 'text:gameTitle');
+  this.gameTitleText.anchor.set(.5, .5);
+  this.playText = this.game.add.button(this.game.world.width / 2, this.game.world.height / 1.5, 'text:play', playGame, this);
+  this.playText.anchor.set(.5, .5);
+  this.controlsSmallText = this.game.add.button(this.game.world.width / 2, this.game.world.height / 1.3, 'text:controlsSmall', showControls, this);
+  this.controlsSmallText.anchor.set(.5, .5);
 
   this.sfx = {
     startGame: this.game.add.audio('sfx:startGame'),
+    select: this.game.add.audio('sfx:select'),
   };
 };
 
@@ -192,6 +213,67 @@ function playGame() {
   this.sfx.startGame.play();
   this.game.state.start('play', true, false, {level: 0});
 };
+
+function showControls() {
+  this.sfx.select.play();
+  this.game.state.start('controls');
+}
+
+ControlsState = {};
+
+ControlsState.create = function() {
+  this.game.add.image(0, 0, 'background');
+  this.controlsBigText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 6, 'text:controlsBig');
+  this.controlsBigText.anchor.set(.5, .5);
+  this.goBackText = this.game.add.button(this.game.world.width / 9, this.game.world.height / 6, 'text:goBack', goBack, this);
+  this.goBackText.anchor.set(.5, .5);
+
+  this.moveLeftText = this.game.add.image(this.game.world.width / 4, this.game.world.height / 3, 'text:moveLeft');
+  this.moveLeftText.anchor.set(.5, .5);
+  this.moveRightText = this.game.add.image(this.game.world.width / 4, this.game.world.height / 2, 'text:moveRight');
+  this.moveRightText.anchor.set(.5, .5);
+  this.jumpText = this.game.add.image(this.game.world.width / 4, this.game.world.height / 1.5, 'text:jump');
+  this.jumpText.anchor.set(.5, .5);
+
+  this.dashText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 3, 'text:dash');
+  this.dashText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2, 'text:dash');
+  this.dashText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 1.5, 'text:dash');
+  this.dashText.anchor.set(.5, .5);
+
+  this.aIcon = this.game.add.image(this.game.world.width / 1.5, this.game.world.height / 3, 'icon:A');
+  this.aIcon.anchor.set(.5, .5);
+  this.slashText = this.game.add.image(this.game.world.width / 1.4, this.game.world.height / 3, 'text:slash');
+  this.slashText.anchor.set(.5, .5);
+  this.leftIcon = this.game.add.image(this.game.world.width / 1.3, this.game.world.height / 3, 'icon:Left');
+  this.leftIcon.anchor.set(.5, .5);
+
+  this.dIcon = this.game.add.image(this.game.world.width / 1.5, this.game.world.height / 2, 'icon:D');
+  this.dIcon.anchor.set(.5, .5);
+  this.slashText = this.game.add.image(this.game.world.width / 1.4, this.game.world.height / 2, 'text:slash');
+  this.slashText.anchor.set(.5, .5);
+  this.rightIcon = this.game.add.image(this.game.world.width / 1.3, this.game.world.height / 2, 'icon:Right');
+  this.rightIcon.anchor.set(.5, .5);
+
+  this.wIcon = this.game.add.image(this.game.world.width / 1.5, this.game.world.height / 1.5, 'icon:W');
+  this.wIcon.anchor.set(.5, .5);
+  this.slashText = this.game.add.image(this.game.world.width / 1.4, this.game.world.height / 1.5, 'text:slash');
+  this.slashText.anchor.set(.5, .5);
+  this.upIcon = this.game.add.image(this.game.world.width / 1.3, this.game.world.height / 1.5, 'icon:Up');
+  this.upIcon.anchor.set(.5, .5);
+  this.slashText = this.game.add.image(this.game.world.width / 1.2, this.game.world.height / 1.5, 'text:slash');
+  this.slashText.anchor.set(.5, .5);
+  this.spacebarIcon = this.game.add.image(this.game.world.width / 1.35, this.game.world.height / 1.28, 'icon:Spacebar');
+  this.spacebarIcon.anchor.set(.5, .5);
+
+  this.sfx = {
+    select: this.game.add.audio('sfx:select'),
+  };
+};
+
+function goBack() {
+  this.sfx.select.play();
+  this.game.state.start('gameTitle');
+}
 
 PlayState = {};
 
@@ -215,6 +297,23 @@ PlayState.init = function(data) {
       this.sfx.jump.play();
     }
   }, this);
+
+this.keys.w.onDown.add(function () {
+    let didJump = this.hero.jump();
+
+    if (didJump) {
+      this.sfx.jump.play();
+    }
+  }, this);
+
+this.keys.spacebar.onDown.add(function () {
+    let didJump = this.hero.jump();
+
+    if (didJump) {
+      this.sfx.jump.play();
+    }
+  }, this);
+
 
   this.coinPickupCount = 0;
   this.hasKey = false;
@@ -464,6 +563,7 @@ window.onload = function() {
 
   game.state.add('load', LoadState);
   game.state.add('gameTitle', GameTitleState);
+  game.state.add('controls', ControlsState);
   game.state.add('play', PlayState);
   game.state.add('gameOver', GameOverState);
   game.state.start('load');
