@@ -195,6 +195,23 @@ LoadState.create = function() {
 
 GameTitleState = {};
 
+GameTitleState.init = function(data) {
+  this.keys = this.game.input.keyboard.addKeys({
+    spacebar: Phaser.KeyCode.SPACEBAR,
+    enter: Phaser.KeyCode.ENTER,
+  });
+
+  this.keys.spacebar.onDown.add(function() {
+    this.sfx.startGame.play();
+    this.game.state.start('play', true, false, {level: 0});
+  }, this);
+
+  this.keys.enter.onDown.add(function() {
+    this.sfx.startGame.play();
+    this.game.state.start('play', true, false, {level: 0});
+  }, this);
+};
+
 GameTitleState.create = function() {
   this.game.add.image(0, 0, 'background');
   this.gameTitleText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2.5, 'text:gameTitle');
@@ -546,6 +563,23 @@ PlayState._createHud = function() {
 };
 
 GameOverState = {};
+
+GameOverState.init = function(data) {
+  this.keys = this.game.input.keyboard.addKeys({
+    spacebar: Phaser.KeyCode.SPACEBAR,
+    enter: Phaser.KeyCode.ENTER,
+  });
+
+  this.keys.spacebar.onDown.add(function() {
+    this.sfx.startGame.play();
+    this.game.state.start('play', true, false, {level: 0});
+  }, this);
+
+  this.keys.enter.onDown.add(function() {
+    this.sfx.startGame.play();
+    this.game.state.start('play', true, false, {level: 0});
+  }, this);
+};
 
 GameOverState.create = function() {
   this.game.add.image(0, 0, 'background');
