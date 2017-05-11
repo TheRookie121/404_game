@@ -169,6 +169,7 @@ LoadState.preload = function() {
   this.game.load.image('text:jump', 'img/jump_text.png');
   this.game.load.image('text:dash', 'img/dash_text.png');
   this.game.load.image('text:slash', 'img/slash_text.png');
+  this.game.load.image('text:madeBy', 'img/madeBy_text.png');
 
   this.game.load.audio('sfx:jump', 'audio/jump.wav');
   this.game.load.audio('sfx:coin', 'audio/coin.wav');
@@ -202,6 +203,8 @@ GameTitleState.create = function() {
   this.playText.anchor.set(.5, .5);
   this.controlsSmallText = this.game.add.button(this.game.world.width / 2, this.game.world.height / 1.3, 'text:controlsSmall', showControls, this);
   this.controlsSmallText.anchor.set(.5, .5);
+  this.madeByText = this.game.add.image(this.game.world.width / 1.1, this.game.world.height / 1.07, 'text:madeBy');
+  this.madeByText.anchor.set(.5, .5);
 
   this.sfx = {
     startGame: this.game.add.audio('sfx:startGame'),
@@ -552,6 +555,8 @@ GameOverState.create = function() {
   this.youWinText.anchor.set(.5, .5);
   this.playAgainText = this.game.add.button(this.game.world.width /2, this.game.world.height / 1.5, 'text:playAgain', playGame, this);
   this.playAgainText.anchor.set(.5, .5);
+  this.madeByText = this.game.add.image(this.game.world.width / 1.1, this.game.world.height / 1.07, 'text:madeBy');
+  this.madeByText.anchor.set(.5, .5);
 
   this.sfx = {
     startGame: this.game.add.audio('sfx:startGame'),
