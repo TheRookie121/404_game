@@ -147,29 +147,29 @@ LoadState.preload = function() {
 
   this.game.load.image('font:numbers', 'img/numbers.png');
 
-  this.game.load.image('icon:coin', 'img/coin_icon.png');
-  this.game.load.image('icon:W', 'img/W_icon.png');
-  this.game.load.image('icon:A', 'img/A_icon.png');
-  this.game.load.image('icon:D', 'img/D_icon.png');
-  this.game.load.image('icon:Up', 'img/Up_icon.png');
-  this.game.load.image('icon:Left', 'img/Left_icon.png');
-  this.game.load.image('icon:Right', 'img/Right_icon.png');
-  this.game.load.image('icon:Spacebar', 'img/Spacebar_icon.png');
+  this.game.load.image('icon:coin', 'img/icon/coin_icon.png');
+  this.game.load.image('icon:W', 'img/icon/W_icon.png');
+  this.game.load.image('icon:A', 'img/icon/A_icon.png');
+  this.game.load.image('icon:D', 'img/icon/D_icon.png');
+  this.game.load.image('icon:Up', 'img/icon/Up_icon.png');
+  this.game.load.image('icon:Left', 'img/icon/Left_icon.png');
+  this.game.load.image('icon:Right', 'img/icon/Right_icon.png');
+  this.game.load.image('icon:Spacebar', 'img/icon/Spacebar_icon.png');
 
-  this.game.load.image('text:gameTitle', 'img/gameTitle_text.png');
-  this.game.load.image('text:youWin', 'img/youWin_text.png');
-  this.game.load.image('text:awesome', 'img/awesome_text.png');
-  this.game.load.image('text:play', 'img/play_text.png');
-  this.game.load.image('text:playAgain', 'img/playAgain_text.png');
-  this.game.load.image('text:controlsSmall', 'img/controls_small_text.png');
-  this.game.load.image('text:controlsBig', 'img/controls_big_text.png');
-  this.game.load.image('text:goBack', 'img/back_text.png');
-  this.game.load.image('text:moveLeft', 'img/moveLeft_text.png');
-  this.game.load.image('text:moveRight', 'img/moveRight_text.png');
-  this.game.load.image('text:jump', 'img/jump_text.png');
-  this.game.load.image('text:dash', 'img/dash_text.png');
-  this.game.load.image('text:slash', 'img/slash_text.png');
-  this.game.load.image('text:madeBy', 'img/madeBy_text.png');
+  this.game.load.image('text:gameTitle', 'img/text/gameTitle_text.png');
+  this.game.load.image('text:youWin', 'img/text/youWin_text.png');
+  this.game.load.image('text:awesome', 'img/text/awesome_text.png');
+  this.game.load.image('text:play', 'img/text/play_text.png');
+  this.game.load.image('text:playAgain', 'img/text/playAgain_text.png');
+  this.game.load.image('text:controlsSmall', 'img/text/controls_small_text.png');
+  this.game.load.image('text:controlsBig', 'img/text/controls_big_text.png');
+  this.game.load.image('text:goBack', 'img/text/back_text.png');
+  this.game.load.image('text:moveLeft', 'img/text/moveLeft_text.png');
+  this.game.load.image('text:moveRight', 'img/text/moveRight_text.png');
+  this.game.load.image('text:jump', 'img/text/jump_text.png');
+  this.game.load.image('text:dash', 'img/text/dash_text.png');
+  this.game.load.image('text:slash', 'img/text/slash_text.png');
+  this.game.load.image('text:madeBy', 'img/text/madeBy_text.png');
 
   this.game.load.audio('sfx:jump', 'audio/jump.wav');
   this.game.load.audio('sfx:coin', 'audio/coin.wav');
