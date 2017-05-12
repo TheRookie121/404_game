@@ -155,6 +155,7 @@ LoadState.preload = function() {
   this.game.load.image('icon:Left', 'img/icon/Left_icon.png');
   this.game.load.image('icon:Right', 'img/icon/Right_icon.png');
   this.game.load.image('icon:Spacebar', 'img/icon/Spacebar_icon.png');
+  this.game.load.image('icon:heart', 'img/icon/heart_icon.png');
 
   this.game.load.image('text:gameTitle', 'img/text/gameTitle_text.png');
   this.game.load.image('text:youWin', 'img/text/youWin_text.png');
@@ -170,6 +171,8 @@ LoadState.preload = function() {
   this.game.load.image('text:dash', 'img/text/dash_text.png');
   this.game.load.image('text:slash', 'img/text/slash_text.png');
   this.game.load.image('text:madeBy', 'img/text/madeBy_text.png');
+  this.game.load.image('text:gameOver', 'img/text/gameOver_text.png');
+  this.game.load.image('text:score', 'img/text/score_text.png');
 
   this.game.load.audio('sfx:jump', 'audio/jump.wav');
   this.game.load.audio('sfx:coin', 'audio/coin.wav');
@@ -177,7 +180,7 @@ LoadState.preload = function() {
   this.game.load.audio('sfx:key','audio/key.wav');
   this.game.load.audio('sfx:door', 'audio/door.wav');
   this.game.load.audio('sfx:death', 'audio/death.wav');
-  this.game.load.audio('sfx:gameOver', 'audio/gameOver.wav');
+  this.game.load.audio('sfx:gameWon', 'audio/gameWon.wav');
   this.game.load.audio('sfx:startGame', 'audio/startGame.ogg');
   this.game.load.audio('sfx:select', 'audio/select.mp3');
 
@@ -231,13 +234,13 @@ GameTitleState.create = function() {
 
 function playGame() {
   this.sfx.startGame.play();
-  this.game.state.start('play', true, false, {level: 0});
+  this.game.state.start('play', true, false, {level: 2});
 };
 
 function showControls() {
   this.sfx.select.play();
   this.game.state.start('controls');
-}
+};
 
 ControlsState = {};
 
@@ -293,11 +296,13 @@ ControlsState.create = function() {
 function goBack() {
   this.sfx.select.play();
   this.game.state.start('gameTitle');
-}
+};
 
 PlayState = {};
 
 const levelCount = 3;
+let lives = 3;
+let coinPickupCount = 0;
 
 PlayState.init = function(data) {
   this.keys = this.game.input.keyboard.addKeys({
@@ -334,8 +339,6 @@ this.keys.spacebar.onDown.add(function () {
     }
   }, this);
 
-
-  this.coinPickupCount = 0;
   this.hasKey = false;
   this.level = (data.level || 0) % levelCount;
 };
@@ -350,7 +353,7 @@ PlayState.create = function() {
     coin: this.game.add.audio('sfx:coin'),
     stomp: this.game.add.audio('sfx:stomp'),
     death: this.game.add.audio('sfx:death'),
-    gameOver: this.game.add.audio('sfx:gameOver'),
+    gameWon: this.game.add.audio('sfx:gameWon'),
   };
 
   this.game.add.image(0, 0, 'background');
@@ -361,8 +364,9 @@ PlayState.create = function() {
 PlayState.update = function() {
   this._handleCollisions();
   this._handleInput();
-  this.coinFont.text = `x${this.coinPickupCount}`;
+  this.coinFont.text = `x${coinPickupCount}`;
   this.keyIcon.frame = this.hasKey ? 1 : 0;
+  this.heartFont.text = `x${lives}`;
 };
 
 PlayState._loadLevel = function(data) {
@@ -498,7 +502,7 @@ PlayState._handleCollisions = function() {
 PlayState._onHeroVsCoin = function(hero, coin) {
   this.sfx.coin.play();
   coin.kill();
-  this.coinPickupCount++;
+  coinPickupCount++;
 };
 
 PlayState._onHeroVsEnemy = function(hero, enemy) {
@@ -507,6 +511,7 @@ PlayState._onHeroVsEnemy = function(hero, enemy) {
     hero.bounce();
     this.sfx.stomp.play();
   } else {
+    lives--;
     hero.die();
     this.sfx.death.play();
     hero.events.onKilled.addOnce(function() {
@@ -514,6 +519,17 @@ PlayState._onHeroVsEnemy = function(hero, enemy) {
     }, this);
 
     enemy.body.touching = enemy.body.wasTouching;
+  }
+
+  if (lives == 0) {
+    hero.die();
+    lives = 3;
+    coinPickupCount = 0;
+    this.sfx.death.play();
+
+    hero.events.onKilled.addOnce(function() {
+      this.game.state.start('gameOver');
+    }, this);
   }
 };
 
@@ -538,8 +554,10 @@ PlayState._goToNextLevel = function() {
     this.game.state.restart(true, false, {level: this.level + 1});
 
     if (this.level == 2) {
-      this.game.state.start('gameOver', true, false);
-      this.sfx.gameOver.play();
+      lives = 3;
+      coinPickupCount = 0;
+      this.game.state.start('gameWon');
+      this.sfx.gameWon.play();
     }
   }, this);
 };
@@ -550,16 +568,58 @@ PlayState._createHud = function() {
 
   const numbersString = '0123456789X ';
   this.coinFont = this.game.add.retroFont('font:numbers', 20, 26, numbersString, 6);
+  this.heartFont = this.game.add.retroFont('font:numbers', 20, 26, numbersString, 6);
 
   let coinIcon = this.game.make.image(this.keyIcon.width + 7, 0, 'icon:coin');
   let coinScoreImg = this.game.make.image(coinIcon.x + coinIcon.width, coinIcon.height / 2, this.coinFont);
   coinScoreImg.anchor.set(0, .5);
 
+  let heartIcon = this.game.make.image(this.keyIcon.width + 110, 0, 'icon:heart');
+  let heartLivesImg = this.game.make.image(heartIcon.x + heartIcon.width, heartIcon.height / 2, this.heartFont);
+  heartLivesImg.anchor.set(0, .5);
+
   this.hud = this.game.add.group();
-  this.hud.add(coinIcon);
   this.hud.position.set(10, 10);
+  this.hud.add(coinIcon);
   this.hud.add(coinScoreImg);
   this.hud.add(this.keyIcon);
+  this.hud.add(heartIcon);
+  this.hud.add(heartLivesImg);
+};
+
+GameWonState = {};
+
+GameWonState.init = function(data) {
+  this.keys = this.game.input.keyboard.addKeys({
+    spacebar: Phaser.KeyCode.SPACEBAR,
+    enter: Phaser.KeyCode.ENTER,
+  });
+
+  this.keys.spacebar.onDown.add(function() {
+    this.sfx.startGame.play();
+    this.game.state.start('play', true, false, {level: 0});
+  }, this);
+
+  this.keys.enter.onDown.add(function() {
+    this.sfx.startGame.play();
+    this.game.state.start('play', true, false, {level: 0});
+  }, this);
+};
+
+GameWonState.create = function() {
+  this.game.add.image(0, 0, 'background');
+  this.awesomeText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 4, 'text:awesome');
+  this.awesomeText.anchor.set(.5, .5);
+  this.youWinText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2, 'text:youWin');
+  this.youWinText.anchor.set(.5, .5);
+  this.playAgainText = this.game.add.button(this.game.world.width /2, this.game.world.height / 1.5, 'text:playAgain', playGame, this);
+  this.playAgainText.anchor.set(.5, .5);
+  this.madeByText = this.game.add.image(this.game.world.width / 1.1, this.game.world.height / 1.07, 'text:madeBy');
+  this.madeByText.anchor.set(.5, .5);
+
+  this.sfx = {
+    startGame: this.game.add.audio('sfx:startGame'),
+  }
 };
 
 GameOverState = {};
@@ -583,10 +643,8 @@ GameOverState.init = function(data) {
 
 GameOverState.create = function() {
   this.game.add.image(0, 0, 'background');
-  this.awesomeText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 3, 'text:awesome');
-  this.awesomeText.anchor.set(.5, .5);
-  this.youWinText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2, 'text:youWin');
-  this.youWinText.anchor.set(.5, .5);
+  this.gameOverText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2, 'text:gameOver');
+  this.gameOverText.anchor.set(.5, .5);
   this.playAgainText = this.game.add.button(this.game.world.width /2, this.game.world.height / 1.5, 'text:playAgain', playGame, this);
   this.playAgainText.anchor.set(.5, .5);
   this.madeByText = this.game.add.image(this.game.world.width / 1.1, this.game.world.height / 1.07, 'text:madeBy');
@@ -604,6 +662,7 @@ window.onload = function() {
   game.state.add('gameTitle', GameTitleState);
   game.state.add('controls', ControlsState);
   game.state.add('play', PlayState);
+  game.state.add('gameWon', GameWonState);
   game.state.add('gameOver', GameOverState);
   game.state.start('load');
 };
