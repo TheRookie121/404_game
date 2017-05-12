@@ -610,12 +610,15 @@ GameWonState.create = function() {
   this.game.add.image(0, 0, 'background');
   this.awesomeText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 4, 'text:awesome');
   this.awesomeText.anchor.set(.5, .5);
-  this.youWinText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2, 'text:youWin');
+  this.youWinText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2.5, 'text:youWin');
   this.youWinText.anchor.set(.5, .5);
   this.playAgainText = this.game.add.button(this.game.world.width /2, this.game.world.height / 1.5, 'text:playAgain', playGame, this);
   this.playAgainText.anchor.set(.5, .5);
   this.madeByText = this.game.add.image(this.game.world.width / 1.1, this.game.world.height / 1.07, 'text:madeBy');
   this.madeByText.anchor.set(.5, .5);
+
+  this.scoreText = this.game.add.image(this.game.world.width / 2.3, this.game.world.height / 1.8, 'text:score');
+  this.scoreText.anchor.set(.5, .5);
 
   this.sfx = {
     startGame: this.game.add.audio('sfx:startGame'),
@@ -643,12 +646,15 @@ GameOverState.init = function(data) {
 
 GameOverState.create = function() {
   this.game.add.image(0, 0, 'background');
-  this.gameOverText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2, 'text:gameOver');
+  this.gameOverText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2.5, 'text:gameOver');
   this.gameOverText.anchor.set(.5, .5);
   this.playAgainText = this.game.add.button(this.game.world.width /2, this.game.world.height / 1.5, 'text:playAgain', playGame, this);
   this.playAgainText.anchor.set(.5, .5);
   this.madeByText = this.game.add.image(this.game.world.width / 1.1, this.game.world.height / 1.07, 'text:madeBy');
   this.madeByText.anchor.set(.5, .5);
+
+  this.scoreText = this.game.add.image(this.game.world.width / 2.3, this.game.world.height / 1.8, 'text:score');
+  this.scoreText.anchor.set(.5, .5);
 
   this.sfx = {
     startGame: this.game.add.audio('sfx:startGame'),
