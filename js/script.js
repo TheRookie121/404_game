@@ -235,7 +235,7 @@ GameTitleState.create = function() {
 
 function playGame() {
   this.sfx.startGame.play();
-  this.game.state.start('play', true, false, {level: 2});
+  this.game.state.start('play', true, false, {level: 0});
 };
 
 function showControls() {
@@ -525,7 +525,7 @@ PlayState._onHeroVsEnemy = function(hero, enemy) {
   if (lives == 0) {
     hero.die();
     lives = 3;
-    coinPickupCount = 0;
+    // coinPickupCount = 0;
     this.sfx.death.play();
 
     hero.events.onKilled.addOnce(function() {
@@ -556,7 +556,7 @@ PlayState._goToNextLevel = function() {
 
     if (this.level == 2) {
       lives = 3;
-      coinPickupCount = 10;
+      // coinPickupCount = 0;
       this.game.state.start('gameWon');
       this.sfx.gameWon.play();
     }
