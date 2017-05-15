@@ -146,6 +146,7 @@ LoadState.preload = function() {
   this.game.load.image('key', 'img/key.png');
 
   this.game.load.image('font:numbers', 'img/numbers.png');
+  this.game.load.image('font:numbersBig', 'img/numbers_big.png');
 
   this.game.load.image('icon:coin', 'img/icon/coin_icon.png');
   this.game.load.image('icon:W', 'img/icon/W_icon.png');
@@ -555,7 +556,7 @@ PlayState._goToNextLevel = function() {
 
     if (this.level == 2) {
       lives = 3;
-      coinPickupCount = 0;
+      coinPickupCount = 10;
       this.game.state.start('gameWon');
       this.sfx.gameWon.play();
     }
@@ -620,9 +621,18 @@ GameWonState.create = function() {
   this.scoreText = this.game.add.image(this.game.world.width / 2.3, this.game.world.height / 1.8, 'text:score');
   this.scoreText.anchor.set(.5, .5);
 
+  const numbersString = '0123456789X ';
+  this.scoreFont = this.game.add.retroFont('font:numbersBig', 28, 36, numbersString, 6);
+  this.score = this.game.add.image(this.game.world.width / 1.7, this.game.world.height / 1.8, this.scoreFont);
+  this.score.anchor.set(.5, .5);
+
   this.sfx = {
     startGame: this.game.add.audio('sfx:startGame'),
   }
+};
+
+GameWonState.update = function() {
+  this.scoreFont.text = `${coinPickupCount}`;
 };
 
 GameOverState = {};
@@ -656,10 +666,21 @@ GameOverState.create = function() {
   this.scoreText = this.game.add.image(this.game.world.width / 2.3, this.game.world.height / 1.8, 'text:score');
   this.scoreText.anchor.set(.5, .5);
 
+  const numbersString = '0123456789X ';
+  this.scoreFont = this.game.add.retroFont('font:numbersBig', 28, 36, numbersString, 6);
+  this.score = this.game.add.image(this.game.world.width / 1.7, this.game.world.height / 1.8, this.scoreFont);
+  this.score.anchor.set(.5, .5);
+
+
   this.sfx = {
     startGame: this.game.add.audio('sfx:startGame'),
   }
 };
+
+GameOverState.update = function() {
+  this.scoreFont.text = `${coinPickupCount}`;
+};
+
 
 window.onload = function() {
   let game = new Phaser.Game(960, 600, Phaser.AUTO, 'game');
