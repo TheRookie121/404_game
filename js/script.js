@@ -622,7 +622,7 @@ GameWonState.create = function() {
   this.scoreText.anchor.set(.5, .5);
 
   const numbersString = '0123456789X ';
-  this.scoreFont = this.game.add.retroFont('font:numbersBig', 28, 36, numbersString, 6);
+  this.scoreFont = this.game.add.retroFont('font:numbersBig', 28, 38, numbersString, 6);
   this.score = this.game.add.image(this.game.world.width / 1.7, this.game.world.height / 1.8, this.scoreFont);
   this.score.anchor.set(.5, .5);
 
@@ -667,7 +667,7 @@ GameOverState.create = function() {
   this.scoreText.anchor.set(.5, .5);
 
   const numbersString = '0123456789X ';
-  this.scoreFont = this.game.add.retroFont('font:numbersBig', 28, 36, numbersString, 6);
+  this.scoreFont = this.game.add.retroFont('font:numbersBig', 28, 38, numbersString, 6);
   this.score = this.game.add.image(this.game.world.width / 1.7, this.game.world.height / 1.8, this.scoreFont);
   this.score.anchor.set(.5, .5);
 
