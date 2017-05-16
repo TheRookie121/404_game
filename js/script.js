@@ -120,12 +120,15 @@ Spider.prototype.die = function() {
   }, this);
 };
 
+// This state loads everything that is needed to run the game
 LoadState = {};
 
+// Make the pixels not blurry
 LoadState.init = function() {
   this.game.renderer.renderSession.roundPixels = true;
 };
 
+// Set the scale & load leveldata, images, number fonts, icons, text images, audio and sprites
 LoadState.preload = function() {
   this.game.scaleMode = Phaser.ScaleManager.SHOW_ALL;
   this.game.scale.pageAlignHorizontally = true;
@@ -193,12 +196,14 @@ LoadState.preload = function() {
   this.game.load.spritesheet('decoration', 'img/decor.png', 42, 42);
 };
 
+// Start the game title screen
 LoadState.create = function() {
   this.game.state.start('gameTitle');
 };
 
 GameTitleState = {};
 
+// Get and set the keys that can start the game
 GameTitleState.init = function(data) {
   this.keys = this.game.input.keyboard.addKeys({
     spacebar: Phaser.KeyCode.SPACEBAR,
@@ -216,6 +221,7 @@ GameTitleState.init = function(data) {
   }, this);
 };
 
+// Set the text images and creates the audio
 GameTitleState.create = function() {
   this.game.add.image(0, 0, 'background');
   this.gameTitleText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2.5, 'text:gameTitle');
@@ -233,18 +239,22 @@ GameTitleState.create = function() {
   };
 };
 
+// Start play state function for pushing button
 function playGame() {
   this.sfx.startGame.play();
   this.game.state.start('play', true, false, {level: 0});
 };
 
+// Start control state function for pushing button
 function showControls() {
   this.sfx.select.play();
   this.game.state.start('controls');
 };
 
+// This state makes the control screen
 ControlsState = {};
 
+// Set the text images and icons for displaying the controls & create the audio
 ControlsState.create = function() {
   this.game.add.image(0, 0, 'background');
   this.controlsBigText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 6, 'text:controlsBig');
@@ -294,17 +304,20 @@ ControlsState.create = function() {
   };
 };
 
+// Start game title state function for pushing button
 function goBack() {
   this.sfx.select.play();
   this.game.state.start('gameTitle');
 };
 
+// This state makes the actuall game
 PlayState = {};
 
 const levelCount = 3;
 let lives = 3;
 let coinPickupCount = 0;
 
+// Get and set the keys used for playing the game
 PlayState.init = function(data) {
   this.keys = this.game.input.keyboard.addKeys({
     left: Phaser.KeyCode.LEFT,
@@ -344,6 +357,7 @@ this.keys.spacebar.onDown.add(function () {
   this.level = (data.level || 0) % levelCount;
 };
 
+// Creates audio & current level and HUD
 PlayState.create = function() {
   this.camera.flash('#000000');
 
@@ -362,6 +376,7 @@ PlayState.create = function() {
   this._createHud();
 };
 
+// Updates functions for handling collisions, input and HUD
 PlayState.update = function() {
   this._handleCollisions();
   this._handleInput();
@@ -370,6 +385,7 @@ PlayState.update = function() {
   this.heartFont.text = `x${lives}`;
 };
 
+// Loads everything that is needed for a level
 PlayState._loadLevel = function(data) {
   this.bgDecoration = this.game.add.group();
   this.platforms = this.game.add.group();
@@ -401,6 +417,7 @@ PlayState._loadLevel = function(data) {
   this.game.physics.arcade.gravity.y = gravity;
 };
 
+// Spawns all the platforms (with invisible walls) and gives it physics while disabling gravity
 PlayState._spawnPlatform = function(platform) {
   let sprite = this.platforms.create(
     platform.x, platform.y, platform.image
@@ -414,6 +431,7 @@ PlayState._spawnPlatform = function(platform) {
   this._spawnEnemyWall(platform.x + sprite.width, platform.y, 'right');
 };
 
+// Spawns all the characters, both enemies and player
 PlayState._spawnCharacters = function(data) {
   data.spiders.forEach(function (spider) {
     let sprite = new Spider(this.game, spider.x, spider.y);
@@ -424,6 +442,7 @@ PlayState._spawnCharacters = function(data) {
   this.game.add.existing(this.hero);
 };
 
+// Spawns, animates and gives physics to all the coins
 PlayState._spawnCoin = function(coin) {
   let sprite = this.coins.create(coin.x, coin.y, 'coin');
 
@@ -435,6 +454,7 @@ PlayState._spawnCoin = function(coin) {
   sprite.body.allowGravity = false;
 };
 
+// Spawns invisible wall and give it physics while disabling gravity
 PlayState._spawnEnemyWall = function(x, y, side) {
   let sprite = this.enemyWalls.create(x, y, 'invisible-wall');
   sprite.anchor.set(side === 'left' ? 1 : 0, 1);
@@ -444,6 +464,7 @@ PlayState._spawnEnemyWall = function(x, y, side) {
   sprite.body.immovable = true;
 };
 
+// Spawns the door and gives it physics
 PlayState._spawnDoor = function(x, y) {
   this.door = this.bgDecoration.create(x, y, 'door');
   this.door.anchor.setTo(.5, 1);
@@ -451,6 +472,7 @@ PlayState._spawnDoor = function(x, y) {
   this.door.body.allowGravity = false;
 };
 
+// Spawns, animates and gives physics to the key
 PlayState._spawnKey = function(x, y) {
   this.key = this.bgDecoration.create(x, y, 'key');
   this.key.anchor.set(.5, .5);
@@ -465,6 +487,7 @@ PlayState._spawnKey = function(x, y) {
     .start();
 };
 
+// Handles the key input and gives behaviour to them
 PlayState._handleInput = function() {
   if (this.keys.left.isDown || this.keys.a.isDown) {
     this.hero.move(-1);
@@ -487,6 +510,7 @@ PlayState._handleInput = function() {
   }, this);
 };
 
+// Handles the physics (both collisions and overlaps) between all the objects
 PlayState._handleCollisions = function() {
   this.game.physics.arcade.collide(this.spiders, this.platforms);
   this.game.physics.arcade.collide(this.spiders, this.enemyWalls);
@@ -500,12 +524,14 @@ PlayState._handleCollisions = function() {
   }, this);
 };
 
+// Handles the overlap between the hero and the coins & counts the score
 PlayState._onHeroVsCoin = function(hero, coin) {
   this.sfx.coin.play();
   coin.kill();
   coinPickupCount++;
 };
 
+// Handles the overlap between the hero and the enemies & counts lives and score
 PlayState._onHeroVsEnemy = function(hero, enemy) {
   if (hero.body.velocity.y > 0) {
     enemy.die();
@@ -522,7 +548,7 @@ PlayState._onHeroVsEnemy = function(hero, enemy) {
 
     enemy.body.touching = enemy.body.wasTouching;
   }
-
+  // Handles if the player dies
   if (lives == 0) {
     hero.die();
     lives = 3;
@@ -534,12 +560,14 @@ PlayState._onHeroVsEnemy = function(hero, enemy) {
   }
 };
 
+// Handles the overlap between the hero and the key
 PlayState._onHeroVsKey = function(hero, key) {
   this.sfx.key.play();
   key.kill();
   this.hasKey = true;
 };
 
+// Handles the overlap between and animates the hero and the door
 PlayState._onHeroVsDoor = function(hero, door) {
   door.frame = 1;
   this.sfx.door.play();
@@ -549,17 +577,18 @@ PlayState._onHeroVsDoor = function(hero, door) {
     .onComplete.addOnce(this._goToNextLevel, this);
 };
 
+// Handles the states when the player goes to the next level
 PlayState._goToNextLevel = function() {
   this.camera.fade('#000000');
   this.camera.onFadeComplete.addOnce(function() {
     this.game.state.restart(true, false, {level: this.level + 1});
 
+    //Handles the states when the player has completed all the levels
     if (this.level == 2) {
-
       if (lives == 3) {
-        coinPickupCount += 30;
+        coinPickupCount += 55;
       } else if (lives == 2) {
-        coinPickupCount += 20;
+        coinPickupCount += 25;
       } else if (lives == 1) {
         coinPickupCount += 10;
       }
@@ -571,6 +600,7 @@ PlayState._goToNextLevel = function() {
   }, this);
 };
 
+// Create and position the Heads Up Display
 PlayState._createHud = function() {
   this.keyIcon = this.game.make.image(0, 19, 'icon:key');
   this.keyIcon.anchor.set(0, .5);
@@ -596,8 +626,10 @@ PlayState._createHud = function() {
   this.hud.add(heartLivesImg);
 };
 
+// This state handles when the player won the game
 GameWonState = {};
 
+// Get and set keys for playing the game again
 GameWonState.init = function(data) {
   this.keys = this.game.input.keyboard.addKeys({
     spacebar: Phaser.KeyCode.SPACEBAR,
@@ -615,6 +647,7 @@ GameWonState.init = function(data) {
   }, this);
 };
 
+// Create the text images and audio
 GameWonState.create = function() {
   this.game.add.image(0, 0, 'background');
   this.awesomeText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 4, 'text:awesome');
@@ -639,12 +672,15 @@ GameWonState.create = function() {
   }
 };
 
+// Update the endscore
 GameWonState.update = function() {
   this.scoreFont.text = `${coinPickupCount}`;
 };
 
+// This state handles when the player has died
 GameOverState = {};
 
+// Get and set keys for playing the game again
 GameOverState.init = function(data) {
   this.keys = this.game.input.keyboard.addKeys({
     spacebar: Phaser.KeyCode.SPACEBAR,
@@ -662,6 +698,7 @@ GameOverState.init = function(data) {
   }, this);
 };
 
+// Create the text images and audio
 GameOverState.create = function() {
   this.game.add.image(0, 0, 'background');
   this.gameOverText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2.5, 'text:gameOver');
@@ -684,11 +721,12 @@ GameOverState.create = function() {
   }
 };
 
+// Update the endscore
 GameOverState.update = function() {
   this.scoreFont.text = `${coinPickupCount}`;
 };
 
-
+// Load canvas in window, add different game states and start the load state
 window.onload = function() {
   let game = new Phaser.Game(960, 600, Phaser.AUTO, 'game');
 
