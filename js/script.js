@@ -513,6 +513,7 @@ PlayState._onHeroVsEnemy = function(hero, enemy) {
     this.sfx.stomp.play();
   } else {
     lives--;
+    coinPickupCount -= 10;
     hero.die();
     this.sfx.death.play();
     hero.events.onKilled.addOnce(function() {
@@ -567,7 +568,7 @@ PlayState._createHud = function() {
   this.keyIcon = this.game.make.image(0, 19, 'icon:key');
   this.keyIcon.anchor.set(0, .5);
 
-  const numbersString = '0123456789X ';
+  const numbersString = '0123456789X-';
   this.coinFont = this.game.add.retroFont('font:numbers', 20, 26, numbersString, 6);
   this.heartFont = this.game.add.retroFont('font:numbers', 20, 26, numbersString, 6);
 
@@ -621,7 +622,7 @@ GameWonState.create = function() {
   this.scoreText = this.game.add.image(this.game.world.width / 2.25, this.game.world.height / 1.8, 'text:score');
   this.scoreText.anchor.set(.5, .5);
 
-  const numbersString = '0123456789X ';
+  const numbersString = '0123456789X-';
   this.scoreFont = this.game.add.retroFont('font:numbersBig', 28, 38, numbersString, 6);
   this.score = this.game.add.image(this.game.world.width / 1.6, this.game.world.height / 1.8, this.scoreFont);
   this.score.anchor.set(.5, .5);
@@ -666,11 +667,10 @@ GameOverState.create = function() {
   this.scoreText = this.game.add.image(this.game.world.width / 2.25, this.game.world.height / 1.8, 'text:score');
   this.scoreText.anchor.set(.5, .5);
 
-  const numbersString = '0123456789X ';
+  const numbersString = '0123456789X-';
   this.scoreFont = this.game.add.retroFont('font:numbersBig', 28, 38, numbersString, 6);
   this.score = this.game.add.image(this.game.world.width / 1.6, this.game.world.height / 1.8, this.scoreFont);
   this.score.anchor.set(.5, .5);
-
 
   this.sfx = {
     startGame: this.game.add.audio('sfx:startGame'),
