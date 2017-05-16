@@ -575,7 +575,7 @@ PlayState._createHud = function() {
   let coinScoreImg = this.game.make.image(coinIcon.x + coinIcon.width, coinIcon.height / 2, this.coinFont);
   coinScoreImg.anchor.set(0, .5);
 
-  let heartIcon = this.game.make.image(this.keyIcon.width + 110, 0, 'icon:heart');
+  let heartIcon = this.game.make.image(coinIcon.width + 147, 0, 'icon:heart');
   let heartLivesImg = this.game.make.image(heartIcon.x + heartIcon.width, heartIcon.height / 2, this.heartFont);
   heartLivesImg.anchor.set(0, .5);
 
@@ -618,12 +618,12 @@ GameWonState.create = function() {
   this.madeByText = this.game.add.image(this.game.world.width / 1.1, this.game.world.height / 1.07, 'text:madeBy');
   this.madeByText.anchor.set(.5, .5);
 
-  this.scoreText = this.game.add.image(this.game.world.width / 2.3, this.game.world.height / 1.8, 'text:score');
+  this.scoreText = this.game.add.image(this.game.world.width / 2.25, this.game.world.height / 1.8, 'text:score');
   this.scoreText.anchor.set(.5, .5);
 
   const numbersString = '0123456789X ';
   this.scoreFont = this.game.add.retroFont('font:numbersBig', 28, 38, numbersString, 6);
-  this.score = this.game.add.image(this.game.world.width / 1.7, this.game.world.height / 1.8, this.scoreFont);
+  this.score = this.game.add.image(this.game.world.width / 1.6, this.game.world.height / 1.8, this.scoreFont);
   this.score.anchor.set(.5, .5);
 
   this.sfx = {
@@ -663,12 +663,12 @@ GameOverState.create = function() {
   this.madeByText = this.game.add.image(this.game.world.width / 1.1, this.game.world.height / 1.07, 'text:madeBy');
   this.madeByText.anchor.set(.5, .5);
 
-  this.scoreText = this.game.add.image(this.game.world.width / 2.3, this.game.world.height / 1.8, 'text:score');
+  this.scoreText = this.game.add.image(this.game.world.width / 2.25, this.game.world.height / 1.8, 'text:score');
   this.scoreText.anchor.set(.5, .5);
 
   const numbersString = '0123456789X ';
   this.scoreFont = this.game.add.retroFont('font:numbersBig', 28, 38, numbersString, 6);
-  this.score = this.game.add.image(this.game.world.width / 1.7, this.game.world.height / 1.8, this.scoreFont);
+  this.score = this.game.add.image(this.game.world.width / 1.6, this.game.world.height / 1.8, this.scoreFont);
   this.score.anchor.set(.5, .5);
 
 
