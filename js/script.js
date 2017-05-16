@@ -526,7 +526,6 @@ PlayState._onHeroVsEnemy = function(hero, enemy) {
   if (lives == 0) {
     hero.die();
     lives = 3;
-    // coinPickupCount = 0;
     this.sfx.death.play();
 
     hero.events.onKilled.addOnce(function() {
@@ -556,8 +555,16 @@ PlayState._goToNextLevel = function() {
     this.game.state.restart(true, false, {level: this.level + 1});
 
     if (this.level == 2) {
+
+      if (lives == 3) {
+        coinPickupCount += 30;
+      } else if (lives == 2) {
+        coinPickupCount += 20;
+      } else if (lives == 1) {
+        coinPickupCount += 10;
+      }
+
       lives = 3;
-      // coinPickupCount = 0;
       this.game.state.start('gameWon');
       this.sfx.gameWon.play();
     }
