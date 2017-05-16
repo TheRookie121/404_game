@@ -1,3 +1,4 @@
+// Set the player and gives it physics and sprites
 function Hero(game, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'hero');
 
@@ -15,6 +16,7 @@ function Hero(game, x, y) {
 Hero.prototype = Object.create(Phaser.Sprite.prototype);
 Hero.prototype.constructor = Hero;
 
+// Behaviour for when the player moves
 Hero.prototype.move = function(direction) {
   const speed = 200;
 
@@ -27,6 +29,7 @@ Hero.prototype.move = function(direction) {
   }
 };
 
+// Behaviour for when the player jumps
 Hero.prototype.jump = function() {
   const jumpSpeed = 600;
   let canJump = this.body.touching.down;
@@ -38,6 +41,7 @@ Hero.prototype.jump = function() {
   return canJump;
 };
 
+// Behaviour for when the player bounces of the enemies
 Hero.prototype.bounce = function() {
   const bounceSpeed = 200;
 
@@ -52,6 +56,7 @@ Hero.prototype.update = function() {
   }
 };
 
+// Behaviour for when the player dies
 Hero.prototype.die = function() {
   this.alive = false;
   this.body.enable = false;
@@ -61,11 +66,13 @@ Hero.prototype.die = function() {
   }, this);
 };
 
+// Behaviour for when the player freezes after dying
 Hero.prototype.freeze = function() {
   this.isFrozen = true;
   this.body.enable = false;
 };
 
+// Handles the animations for the player for different conditions
 Hero.prototype._getAnimationName = function() {
   let name = 'stop';
 
@@ -84,6 +91,7 @@ Hero.prototype._getAnimationName = function() {
   return name;
 };
 
+// Set the enemies and gives it physics and sprites
 function Spider(game, x, y) {
   Phaser.Sprite.call(this, game, x, y, 'spider');
 
@@ -102,6 +110,7 @@ spiderSpeed = 100;
 Spider.prototype = Object.create(Phaser.Sprite.prototype);
 Spider.prototype.constructor = Spider;
 
+// Behaviour for when the enemies moves
 Spider.prototype.update = function() {
   if (this.body.touching.right || this.body.blocked.right) {
     this.body.velocity.x = -spiderSpeed;
@@ -112,6 +121,7 @@ Spider.prototype.update = function() {
   }
 };
 
+// Behaviour for when the enemies die
 Spider.prototype.die = function() {
   this.body.enable = false;
 
