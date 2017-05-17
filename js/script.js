@@ -187,6 +187,7 @@ LoadState.preload = function() {
   this.game.load.image('text:madeBy', 'img/text/madeBy_text.png');
   this.game.load.image('text:gameOver', 'img/text/gameOver_text.png');
   this.game.load.image('text:score', 'img/text/score_text.png');
+  this.game.load.image('text:time', 'img/text/time_text.png');
 
   this.game.load.audio('sfx:jump', 'audio/jump.wav');
   this.game.load.audio('sfx:coin', 'audio/coin.wav');
@@ -694,7 +695,7 @@ GameWonState.create = function() {
   this.awesomeText.anchor.set(.5, .5);
   this.youWinText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2.5, 'text:youWin');
   this.youWinText.anchor.set(.5, .5);
-  this.playAgainText = this.game.add.button(this.game.world.width /2, this.game.world.height / 1.5, 'text:playAgain', playGame, this);
+  this.playAgainText = this.game.add.button(this.game.world.width / 2, this.game.world.height / 1.3, 'text:playAgain', playGame, this);
   this.playAgainText.anchor.set(.5, .5);
   this.madeByText = this.game.add.image(this.game.world.width / 1.1, this.game.world.height / 1.07, 'text:madeBy');
   this.madeByText.anchor.set(.5, .5);
@@ -706,6 +707,9 @@ GameWonState.create = function() {
   this.scoreFont = this.game.add.retroFont('font:numbersBig', 28, 38, numbersString, 6);
   this.score = this.game.add.image(this.game.world.width / 1.6, this.game.world.height / 1.8, this.scoreFont);
   this.score.anchor.set(.5, .5);
+
+  this.timeText = this.game.add.image(this.game.world.width / 2.35, this.game.world.height / 1.5, 'text:time');
+  this.timeText.anchor.set(.5, .5);
 
   this.sfx = {
     startGame: this.game.add.audio('sfx:startGame'),
@@ -757,6 +761,9 @@ GameOverState.create = function() {
   this.scoreFont = this.game.add.retroFont('font:numbersBig', 28, 38, numbersString, 6);
   this.score = this.game.add.image(this.game.world.width / 1.6, this.game.world.height / 1.8, this.scoreFont);
   this.score.anchor.set(.5, .5);
+
+  this.timeText = this.game.add.image(this.game.world.width / 2.35, this.game.world.height / 1.5, 'text:time');
+  this.timeText.anchor.set(.5, .5);
 
   this.sfx = {
     startGame: this.game.add.audio('sfx:startGame'),
