@@ -252,7 +252,7 @@ GameTitleState.create = function() {
 // Start play state function for pushing button
 function playGame() {
   this.sfx.startGame.play();
-  this.game.state.start('play', true, false, {level: 0});
+  this.game.state.start('play', true, false, {level: 2});
 };
 
 // Start control state function for pushing button
@@ -327,6 +327,15 @@ const levelCount = 3;
 let lives = 3;
 let coinPickupCount = 0;
 
+const timerText = {
+  font: '30px Arial',
+    fill: '#ffffff',
+    align: 'center',
+};
+var timer;
+let seconds = 0;
+let milliseconds = 0;
+
 // Get and set the keys used for playing the game
 PlayState.init = function(data) {
   this.keys = this.game.input.keyboard.addKeys({
@@ -384,6 +393,9 @@ PlayState.create = function() {
   this.game.add.image(0, 0, 'background');
   this._loadLevel(this.game.cache.getJSON(`level:${this.level}`));
   this._createHud();
+
+  timer = this.game.add.text(this.game.world.width / 2, this.game.world.height / 20, '00:00:00', timerText);
+  timer.anchor.set(.5, .5);
 };
 
 // Updates functions for handling collisions, input and HUD
@@ -393,6 +405,24 @@ PlayState.update = function() {
   this.coinFont.text = `x${coinPickupCount}`;
   this.keyIcon.frame = this.hasKey ? 1 : 0;
   this.heartFont.text = `x${lives}`;
+
+  this._updateTimer();
+};
+
+// Update function for handling the timer
+PlayState._updateTimer = function() {
+  // minutes = Math.floor(this.game.time.totalElapsedSeconds() / 60000) % 60;
+  seconds = Math.floor(this.game.time.totalElapsedSeconds()); // / 1000) % 60;
+  milliseconds = Math.floor(this.game.time.time) % 100;
+
+  if (seconds < 10) {
+    seconds = '0' + seconds;
+  }
+  if (milliseconds < 10) {
+    milliseconds = '0' + milliseconds;
+  }
+
+  this.gameTime = timer.setText(seconds + ':' + milliseconds);
 };
 
 // Loads everything that is needed for a level
@@ -680,6 +710,8 @@ GameWonState.create = function() {
   this.sfx = {
     startGame: this.game.add.audio('sfx:startGame'),
   }
+
+  timer.setText(seconds + ':' + milliseconds);
 };
 
 // Update the endscore
