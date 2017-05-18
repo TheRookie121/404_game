@@ -158,8 +158,10 @@ LoadState.preload = function() {
   this.game.load.image('invisible-wall', 'img/invisible_wall.png');
   this.game.load.image('key', 'img/key.png');
 
-  this.game.load.image('font:numbers', 'img/numbers.png');
-  this.game.load.image('font:numbersBig', 'img/numbers_big.png');
+  this.game.load.image('font:numbers', 'img/font/numbers.png');
+  this.game.load.image('font:numbersBig', 'img/font/numbers_big.png');
+
+  this.game.load.bitmapFont('font:numbersBitmap', 'img/font/numbers_bitmap.png', 'img/font/numbers_bitmap.fnt')
 
   this.game.load.image('icon:coin', 'img/icon/coin_icon.png');
   this.game.load.image('icon:W', 'img/icon/W_icon.png');
@@ -328,11 +330,6 @@ const levelCount = 3;
 let lives = 3;
 let coinPickupCount = 0;
 
-const timerText = {
-  font: '30px Arial',
-    fill: '#ffffff',
-    align: 'center',
-};
 var timer;
 let seconds = 0;
 let milliseconds = 0;
@@ -395,7 +392,7 @@ PlayState.create = function() {
   this._loadLevel(this.game.cache.getJSON(`level:${this.level}`));
   this._createHud();
 
-  timer = this.game.add.text(this.game.world.width / 2, this.game.world.height / 20, '00:00:00', timerText);
+  timer = this.game.add.bitmapText(this.game.world.width / 2, this.game.world.height / 20, 'font:numbersBitmap', '00:00:00', 30);
   timer.anchor.set(.5, .5);
 };
 
@@ -712,13 +709,14 @@ GameWonState.create = function() {
   this.timeText = this.game.add.image(this.game.world.width / 2.35, this.game.world.height / 1.5, 'text:time');
   this.timeText.anchor.set(.5, .5);
 
+  timer = this.game.add.bitmapText(this.game.world.width / 1.6, this.game.world.height / 1.5, 'font:numbersBitmap', '00:00:00', 40);
+  timer.setText(seconds + ':' + milliseconds);
+  timer.anchor.set(.5, .5);
+
   this.sfx = {
     startGame: this.game.add.audio('sfx:startGame'),
   }
 
-  timer = this.game.add.text(this.game.world.width / 1.6, this.game.world.height / 1.5, '00:00:00', timerText);
-  timer.setText(seconds + ':' + milliseconds);
-  timer.anchor.set(.5, .5);
 };
 
 // Update the endscore
@@ -767,6 +765,10 @@ GameOverState.create = function() {
 
   this.timeText = this.game.add.image(this.game.world.width / 2.35, this.game.world.height / 1.5, 'text:time');
   this.timeText.anchor.set(.5, .5);
+
+  timer = this.game.add.bitmapText(this.game.world.width / 1.6, this.game.world.height / 1.5, 'font:numbersBitmap', '00:00:00', 40);
+  timer.setText(seconds + ':' + milliseconds);
+  timer.anchor.set(.5, .5);
 
   this.sfx = {
     startGame: this.game.add.audio('sfx:startGame'),
