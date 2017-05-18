@@ -407,13 +407,14 @@ PlayState.update = function() {
   this.keyIcon.frame = this.hasKey ? 1 : 0;
   this.heartFont.text = `x${lives}`;
 
-  this._updateTimer();
+  if (this.level < levelCount){
+    this._updateTimer();
+  }
 };
 
 // Update function for handling the timer
 PlayState._updateTimer = function() {
-  // minutes = Math.floor(this.game.time.totalElapsedSeconds() / 60000) % 60;
-  seconds = Math.floor(this.game.time.totalElapsedSeconds()); // / 1000) % 60;
+  seconds = Math.floor(this.game.time.totalElapsedSeconds());
   milliseconds = Math.floor(this.game.time.time) % 100;
 
   if (seconds < 10) {
@@ -423,7 +424,7 @@ PlayState._updateTimer = function() {
     milliseconds = '0' + milliseconds;
   }
 
-  this.gameTime = timer.setText(seconds + ':' + milliseconds);
+  timer.setText(seconds + ':' + milliseconds);
 };
 
 // Loads everything that is needed for a level
@@ -715,7 +716,9 @@ GameWonState.create = function() {
     startGame: this.game.add.audio('sfx:startGame'),
   }
 
+  timer = this.game.add.text(this.game.world.width / 1.6, this.game.world.height / 1.5, '00:00:00', timerText);
   timer.setText(seconds + ':' + milliseconds);
+  timer.anchor.set(.5, .5);
 };
 
 // Update the endscore
