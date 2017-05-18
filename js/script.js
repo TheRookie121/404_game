@@ -255,7 +255,7 @@ GameTitleState.create = function() {
 // Start play state function for pushing button
 function playGame() {
   this.sfx.startGame.play();
-  this.game.state.start('play', true, false, {level: 2});
+  this.game.state.start('play', true, false, {level: 0});
 };
 
 // Start control state function for pushing button
@@ -392,7 +392,7 @@ PlayState.create = function() {
   this._loadLevel(this.game.cache.getJSON(`level:${this.level}`));
   this._createHud();
 
-  timer = this.game.add.bitmapText(this.game.world.width / 2, this.game.world.height / 20, 'font:numbersBitmap', '00:00:00', 30);
+  timer = this.game.add.bitmapText(this.game.world.width / 2, this.game.world.height / 20, 'font:numbersBitmap', '00:000', 30);
   timer.anchor.set(.5, .5);
 };
 
@@ -412,7 +412,7 @@ PlayState.update = function() {
 // Update function for handling the timer
 PlayState._updateTimer = function() {
   seconds = Math.floor(this.game.time.totalElapsedSeconds());
-  milliseconds = Math.floor(this.game.time.time) % 100;
+  milliseconds = Math.floor(this.game.time.time) % 1000;
 
   if (seconds < 10) {
     seconds = '0' + seconds;
@@ -750,7 +750,7 @@ GameOverState.create = function() {
   this.game.add.image(0, 0, 'background');
   this.gameOverText = this.game.add.image(this.game.world.width / 2, this.game.world.height / 2.5, 'text:gameOver');
   this.gameOverText.anchor.set(.5, .5);
-  this.playAgainText = this.game.add.button(this.game.world.width /2, this.game.world.height / 1.5, 'text:playAgain', playGame, this);
+  this.playAgainText = this.game.add.button(this.game.world.width /2, this.game.world.height / 1.3, 'text:playAgain', playGame, this);
   this.playAgainText.anchor.set(.5, .5);
   this.madeByText = this.game.add.image(this.game.world.width / 1.1, this.game.world.height / 1.07, 'text:madeBy');
   this.madeByText.anchor.set(.5, .5);
